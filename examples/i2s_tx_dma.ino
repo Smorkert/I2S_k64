@@ -3,6 +3,7 @@
   Using the hughpyle minsky-circles demo for the Teensy3 to demonstrate I2S TX with DMA
   DAC needs to be 16-bit for this demo to work (change to 24 bit by multiplying by 8388608 instead of 32767 and put in int32)
   
+  
 // Pin patterns
 // Teensy 3.0 hardware has several ways to configure its I2S pins:
 //      pin     alt4            alt6
