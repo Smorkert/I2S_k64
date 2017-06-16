@@ -1,5 +1,7 @@
 /*
   I2S & DMA digital audio demonstrator for Teensy 3.5
+  Using the hughpyle minsky-circles demo for the Teensy3 to demonstrate I2S TX with DMA
+  DAC needs to be 16-bit for this demo to work (change to 24 bit by multiplying by 8388608 instead of 32767 and put in int32)
   
 // Pin patterns
 // Teensy 3.0 hardware has several ways to configure its I2S pins:
@@ -21,7 +23,7 @@
 
 
 /*
-PINS:
+PINS: (pin pattern 2)
 Tx pin 3 : I2S0_TXD0     <--> Data
 Tx pin 4 : I2S0_TX_FS    <--> LRCLK
 Tx pin 9 : I2S0_TX_BCLK  <--> BCLK
