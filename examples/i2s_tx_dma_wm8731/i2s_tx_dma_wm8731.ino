@@ -20,9 +20,8 @@
 //      32      I2S0_TX_BCLK                        (also on 9, 24)
 
 
-#define I2S_TX_PIN_PATTERN_2   0x02         // Transmit pins 3, 4, 9, 11
 /*
-pins:
+PINS:
 Tx pin 3 : I2S0_TXD0     <--> Data
 Tx pin 4 : I2S0_TX_FS    <--> LRCLK
 Tx pin 9 : I2S0_TX_BCLK  <--> BCLK
@@ -31,6 +30,7 @@ Tx pin 11: I2S0_MCLK     <--> MCLK
 
 /* I2S digital audio */
 #include <i2s.h>
+#define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2 // Transmit pins 3, 4, 9, 11
 
 
 // audio data
