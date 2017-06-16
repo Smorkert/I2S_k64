@@ -1,6 +1,5 @@
 #include <i2s.h>
-#include <mk20dx128.h>
-#include "core_pins.h"
+#include <kinetis.h>
 
 // There's one instance of the class for Tx, another for RX
 I2S_class I2STx0(0);
