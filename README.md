@@ -10,5 +10,3 @@ In development:
 
 -Only TX to generic DAC without register control w/ I2S SAI
 
--Need to verify/change mk20dx128.h to mk64FX512.h (if there is one)
-
