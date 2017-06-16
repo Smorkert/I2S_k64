@@ -31,7 +31,8 @@ Tx pin 11: I2S0_MCLK     <--> MCLK
 /* I2S digital audio */
 #include <i2s.h>
 #define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2 // Transmit pins 3, 4, 9, 11
-
+#define CLOCK_TYPE          (I2S_CLOCK_48K_INTERNAL)
+#define clock_per_sec       48000
 
 // audio data
 int16_t audf, audx, audy, audd;
@@ -82,12 +83,6 @@ void setup()
   delay(2000); 
   Serial.println( "Initializing." );
 
-  delay(1000);
-  WM8731.begin( low, CODEC_BITRATE, CODEC_INTERFACE_FLAGS );
-  WM8731.setActive();
-  WM8731.setOutputVolume( 127 );
-  Serial.println( "Initialized I2C" );
-  
   delay(1000);
   I2STx0.stop();
   I2STx0.begin( CLOCK_TYPE, dma_tx_callback );
