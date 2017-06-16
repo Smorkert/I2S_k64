@@ -50,7 +50,7 @@ void I2S_class::start()
         // When FIFO needs data it generates a DMA request.
         if( receive )
         {
-            // Receive enable
+            // Receive enable (SAI Receive Control Register) 
             I2S0_RCSR |= I2S_RCSR_RE            // Receive Enable
                        | I2S_RCSR_BCE           // Bit Clock Enable
                        | I2S_RCSR_FRDE          // FIFO Request DMA Enable
