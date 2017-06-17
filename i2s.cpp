@@ -543,8 +543,8 @@ void I2S_class::dma_receive_init(void)
     DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;  // Alternated with _dma_Buffer_B by our interrupt handler
     DMA_TCD1_DOFF           = 2;                                    // 2 bytes destination offset after each transfer
     DMA_TCD1_DLASTSGA       = 0;                                    // No scatter/gather
-    DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_CITER_MASK;     // Major loop iteration count = total samples (128)
-    DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
+    DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
+    DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
     DMA_TCD1_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
                             | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
 
@@ -559,7 +559,7 @@ void I2S_class::dma_receive_init(void)
     DMA_TCD1_CSR |= DMA_TCD_CSR_ACTIVE;
 
     // To initiate from software, set DMA_CSR[start]
-    //DMA_TCD1_CSR |= DMA_CSR_START;
+    //DMA_TCD1_CSR |= DMA_TCD_CSR_START;
 }
 
 
