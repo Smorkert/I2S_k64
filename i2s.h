@@ -7,6 +7,7 @@
 // Audio configuration.  Edit these here if you need to.
 #define I2S_FRAME_SIZE         2            // Number of frames, 2=stereo
 
+
 // Number of bits per sample in the physical data (8, 16 or 32)
 #ifndef I2S_IO_BIT_DEPTH 
   #define I2S_IO_BIT_DEPTH  16
@@ -14,6 +15,7 @@
 #else
   #error I2S_IO_BIT_DEPTH value not defined
 #endif
+
 
 // Number of bits per sample in the DMA buffer (8, 16 or 32)
 #ifndef I2S_BUFFER_BIT_DEPTH
@@ -24,12 +26,14 @@
 #endif
 
 
-#ifndef CPU_CLK //System CLK in MHz
+//System CLK in MHz
+#ifndef CPU_CLK
   #define CPU_CLK 96
 #elif (CPU_CLK == 96)||(CPU_CLK == 120)||(CPU_CLK == 144)||(CPU_CLK == 168)||(CPU_CLK == 180)||(CPU_CLK == 240)
 #else
   #error CPU_CLK value not defined
 #endif
+
 
 // Clock type constants
 #define I2S_CLOCK_EXTERNAL     0            // The bit clock is provided by an external device (e.g. the codec)
@@ -83,6 +87,7 @@
   #error I2S_PIN_PATTERN value not defined
 #endif
 
+        
 // DMA buffer size (in samples).
 // Using ping-pong DMA, this determines your latency.
 // If you need super-low latency, set this smaller (or use I2S without DMA).
