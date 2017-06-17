@@ -8,6 +8,7 @@
 #define I2S_FRAME_SIZE         2            // Number of frames, 2=stereo
 #define I2S_IO_BIT_DEPTH       16           // Number of bits per sample in the physical data (8, 16 or 32)
 #define I2S_BUFFER_BIT_DEPTH   16           // Number of bits per sample in the DMA buffer (8, 16 or 32)
+#define CPU_CLK                96           // System CLK in MHz
 
 // Clock type constants
 #define I2S_CLOCK_EXTERNAL     0            // The bit clock is provided by an external device (e.g. the codec)
