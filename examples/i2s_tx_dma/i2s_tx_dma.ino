@@ -23,7 +23,6 @@
 //      32      I2S0_TX_BCLK                        (also on 9, 24)
 
 
-/*
 PINS: (pin pattern 2)
 Tx pin 3 : I2S0_TXD0     <--> Data
 Tx pin 4 : I2S0_TX_FS    <--> LRCLK
@@ -31,7 +30,7 @@ Tx pin 9 : I2S0_TX_BCLK  <--> BCLK
 Tx pin 11: I2S0_MCLK     <--> MCLK
 */
 
-/* I2S digital audio */
+//I2S digital audio
 #include <i2s.h>
 #define CLOCK_TYPE          (I2S_CLOCK_48K_INTERNAL)
 #define clock_per_sec       48000
