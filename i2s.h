@@ -53,7 +53,7 @@
 #define I2S_RX_PIN_PATTERN_5   0x50         // Receive pins 27, 29, 13, 28 (MCLK on 28)
 #define I2S_RX_PIN_PATTERN_6   0x60         // Receive pins 27, 29, 13, 11 (MCLK on 11)
 
-#define I2S_PIN_PATTERN       I2S_TX_PIN_PATTERN_2 + I2S_RX_PIN_PATTERN_6
+#define I2S_PIN_PATTERN       I2S_TX_PIN_PATTERN_2
 
 
 // DMA buffer size (in samples).
