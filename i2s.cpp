@@ -225,20 +225,104 @@ void I2S_class::clock_init()
         
         // 8k, 12k, 16k, 32k, etc all clock the I2S module at 12.288 MHz
         // 11025Hz, 22050, 44100 clock the I2S module at 11.2896 MHz
-        switch( clock )
-        {
-            case I2S_CLOCK_44K_INTERNAL:
-                // Divide to get the 11.2896 MHz from 96MHz (96* (2/17))
-                I2S0_MDR = I2S_MDR_FRACT(1) | I2S_MDR_DIVIDE(16);
-                break;
-            case I2S_CLOCK_8K_INTERNAL:
-            case I2S_CLOCK_32K_INTERNAL:
-            case I2S_CLOCK_48K_INTERNAL:
-            default:
-                // Divide to get the 12.2880 MHz from 96MHz (96* (16/125))
-                I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
-                break;
-        }
+        switch( CPU_CLK )
+        { 
+            case 96:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 96MHz (96* (2/17))
+                        I2S0_MDR = I2S_MDR_FRACT(1) | I2S_MDR_DIVIDE(16);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 12.2880 MHz from 96MHz (96* (16/125))
+                        I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
+                        break;
+                }
+                    break;
+            case 120:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 120MHz (120* (147/1562))
+                        I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(1561);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 12.2880 MHz from 120MHz (120* (64/625))
+                        I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
+                        break;
+                }
+                    break;
+            case 144:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 144MHz (144* (49/625))
+                        I2S0_MDR = I2S_MDR_FRACT(48) | I2S_MDR_DIVIDE(624);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 18.4320 MHz from 144MHz (144* (16/125))
+                        I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
+                        break;
+                }
+                    break;
+             case 168:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 168MHz (168* (42/625))
+                        I2S0_MDR = I2S_MDR_FRACT(41) | I2S_MDR_DIVIDE(624);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 12.2880 MHz from 168MHz (168* (117/1600))
+                        I2S0_MDR = I2S_MDR_FRACT(116) | I2S_MDR_DIVIDE(1599);
+                        break;
+                }
+                    break;
+             case 180:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 180MHz (180* (196/3125))
+                        I2S0_MDR = I2S_MDR_FRACT(195) | I2S_MDR_DIVIDE(3124);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 18.4320 MHz from 180MHz (180* (64/625))
+                        I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
+                        break;
+                }
+                    break;
+             case 240:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                        // Divide to get the 11.2896 MHz from 240MHz (240* (147/3125))
+                        I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(3124);
+                        break;
+                    case I2S_CLOCK_8K_INTERNAL:
+                    case I2S_CLOCK_32K_INTERNAL:
+                    case I2S_CLOCK_48K_INTERNAL:
+                    default:
+                        // Divide to get the 12.2880 MHz from 240MHz (240* (32/625))
+                        I2S0_MDR = I2S_MDR_FRACT(31) | I2S_MDR_DIVIDE(624);
+                        break;
+                }
+                    break;
     }
 
     // re-enable system clock to the I2S module
