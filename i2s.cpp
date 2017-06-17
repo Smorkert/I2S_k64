@@ -449,7 +449,7 @@ void I2S_class::dma_transmit_init(void)
     NVIC_ENABLE_IRQ(IRQ_DMA_CH0);
 
     // Set inactive
-    DMA_TCD0_CSR &= ~(DMA_CSR_ACTIVE);
+    DMA_TCD0_CSR &= ~(DMA_TCD_CSR_ACTIVE);
     
 #ifndef ROUNDROBIN
     // Set channel priorities (each must be unique)
