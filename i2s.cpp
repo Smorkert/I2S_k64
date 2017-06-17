@@ -492,10 +492,10 @@ void I2S_class::dma_transmit_init(void)
     DMAMUX0_CHCFG0 |= DMAMUX_ENABLE /* | DMAMUX_TRIG */;
 
     // Set active
-    DMA_TCD0_CSR |= DMA_CSR_ACTIVE;
+    DMA_TCD0_CSR |= DMA_TCD_CSR_ACTIVE;
 
     // To initiate from software, set DMA_CSR[start]
-    //DMA_TCD0_CSR |= DMA_CSR_START;
+    //DMA_TCD0_CSR |= DMA_TCD_CSR_START;
 }
 
 void I2S_class::dma_receive_init(void)  
@@ -513,7 +513,7 @@ void I2S_class::dma_receive_init(void)
     NVIC_ENABLE_IRQ(IRQ_DMA_CH1);
 
     // Set inactive
-    DMA_TCD1_CSR &= ~(DMA_CSR_ACTIVE);
+    DMA_TCD1_CSR &= ~(DMA_TCD_CSR_ACTIVE);
     
 #ifndef ROUNDROBIN
     // Set channel priorities (each must be unique)
@@ -545,8 +545,8 @@ void I2S_class::dma_receive_init(void)
     DMA_TCD1_DLASTSGA       = 0;                                    // No scatter/gather
     DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_CITER_MASK;     // Major loop iteration count = total samples (128)
     DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
-    DMA_TCD1_CSR            = DMA_CSR_INTMAJOR                      // Interrupt on major loop completion
-                            | DMA_CSR_BWC(3);                       // DMA bandwidth control
+    DMA_TCD1_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
+                            | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
 
     // enable DMA channel 1 requests
     // DMA_ERQ = DMA_ERQ_ERQ1;
