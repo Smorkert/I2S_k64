@@ -33,10 +33,12 @@ Tx pin 11: I2S0_MCLK     <--> MCLK
 
 //I2S digital audio
 #include <i2s.h>
-#define CLOCK_TYPE          (I2S_CLOCK_48K_INTERNAL)  //Sample Rate
-#define CPU_CLK             96                        //System CLK in MHz
-#define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2      //TX Pin Pattern, see <i2s.h>
-#define DMA_BUFFER_SIZE     128                       //DMA Buffer Size
+#define CLOCK_TYPE             (I2S_CLOCK_48K_INTERNAL)  // Sample Rate
+#define CPU_CLK                96                        // System CLK in MHz
+#define I2S_PIN_PATTERN        I2S_TX_PIN_PATTERN_2      // TX Pin Pattern, see <i2s.h>
+#define DMA_BUFFER_SIZE        128                       // DMA Buffer Size
+#define I2S_IO_BIT_DEPTH       16                        // Number of bits per sample in the physical data (8, 16 or 32)
+#define I2S_BUFFER_BIT_DEPTH   16                        // Number of bits per sample in the DMA buffer (8, 16 or 32)
 
 #define clock_per_sec       48000
 
