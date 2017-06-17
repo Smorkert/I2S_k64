@@ -71,6 +71,12 @@
 // DMA buffer size (in samples).
 // Using ping-pong DMA, this determines your latency.
 // If you need super-low latency, set this smaller (or use I2S without DMA).
+#ifndef DMA_BUFFER_SIZE
+  #define DMA_BUFFER_SIZE 128
+#elif (DMA_BUFFER_SIZE >= 1)&&(DMA_BUFFER_SIZE <= 128)
+#else
+  #error DMA_BUFFER_SIZE value not defined
+#endif
 #define DMA_BUFFER_SIZE        128
 
 // Use round-robin DMA channel priorities?  If not, they're explicitly set
