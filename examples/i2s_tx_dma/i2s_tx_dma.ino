@@ -22,6 +22,7 @@
 //      29      I2S0_RX_FS                          (also on 12)
 //      32      I2S0_TX_BCLK                        (also on 9, 24)
 
+#define I2S_TX_PIN_PATTERN_4   0x04         // Transmit pins 22, 23, 9, 11 (MCLK on 11)
 
 PINS: (pin pattern 2)
 Tx pin 3 : I2S0_TXD0     <--> Data
