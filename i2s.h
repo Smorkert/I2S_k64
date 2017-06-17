@@ -13,7 +13,7 @@
   #define CPU_CLK 96
 #elif (CPU_CLK == 96)||(CPU_CLK == 120)||(CPU_CLK == 144)||(CPU_CLK == 168)||(CPU_CLK == 180)||(CPU_CLK == 240)
 #else
-  #error SAMPLE_RATE value not defined
+  #error CPU_CLK value not defined
 #endif
 
 // Clock type constants
@@ -59,7 +59,13 @@
 #define I2S_RX_PIN_PATTERN_5   0x50         // Receive pins 27, 29, 13, 28 (MCLK on 28)
 #define I2S_RX_PIN_PATTERN_6   0x60         // Receive pins 27, 29, 13, 11 (MCLK on 11)
 
-#define I2S_PIN_PATTERN       I2S_TX_PIN_PATTERN_4
+#ifndef I2S_PIN_PATTERN //I2S RX PIN PATTERN
+  #define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2
+#elif (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_1)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_2)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_3)||
+      (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_4)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_5)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_6)
+#else
+  #error I2S_PIN_PATTERN value not defined
+#endif
 
 
 // DMA buffer size (in samples).
