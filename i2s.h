@@ -6,8 +6,23 @@
 
 // Audio configuration.  Edit these here if you need to.
 #define I2S_FRAME_SIZE         2            // Number of frames, 2=stereo
-#define I2S_IO_BIT_DEPTH       16           // Number of bits per sample in the physical data (8, 16 or 32)
-#define I2S_BUFFER_BIT_DEPTH   16           // Number of bits per sample in the DMA buffer (8, 16 or 32)
+
+// Number of bits per sample in the physical data (8, 16 or 32)
+#ifndef I2S_IO_BIT_DEPTH 
+  #define I2S_IO_BIT_DEPTH  16
+#elif (I2S_IO_BIT_DEPTH == 8)||(I2S_IO_BIT_DEPTH == 16)||(I2S_IO_BIT_DEPTH == 32)
+#else
+  #error I2S_IO_BIT_DEPTH value not defined
+#endif
+
+// Number of bits per sample in the DMA buffer (8, 16 or 32)
+#ifndef I2S_BUFFER_BIT_DEPTH
+  #define I2S_BUFFER_BIT_DEPTH  16
+#elif (I2S_BUFFER_BIT_DEPTH == 8)||(I2S_BUFFER_BIT_DEPTH == 16)||(I2S_BUFFER_BIT_DEPTH == 32)
+#else
+  #error I2S_BUFFER_BIT_DEPTH value not defined
+#endif
+
 
 #ifndef CPU_CLK //System CLK in MHz
   #define CPU_CLK 96
@@ -59,14 +74,14 @@
 #define I2S_RX_PIN_PATTERN_5   0x50         // Receive pins 27, 29, 13, 28 (MCLK on 28)
 #define I2S_RX_PIN_PATTERN_6   0x60         // Receive pins 27, 29, 13, 11 (MCLK on 11)
 
-#ifndef I2S_PIN_PATTERN //I2S RX PIN PATTERN
+//I2S RX PIN PATTERN
+#ifndef I2S_PIN_PATTERN 
   #define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2
 #elif (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_1)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_2)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_3)||
       (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_4)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_5)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_6)
 #else
   #error I2S_PIN_PATTERN value not defined
 #endif
-
 
 // DMA buffer size (in samples).
 // Using ping-pong DMA, this determines your latency.
