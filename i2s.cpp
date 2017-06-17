@@ -470,19 +470,19 @@ void I2S_class::dma_transmit_init(void)
     // fill the TCD regs
     DMA_TCD0_SADDR          = (const volatile void *) _dma_Tx_Buffer_A ;            // alternated with _dma_Buffer_B by our interrupt handler
     DMA_TCD0_SOFF           = 2;                                    // 2 byte source offset after each transfer
-    DMA_TCD0_ATTR           = DMA_ATTR_SMOD(0)                      // No source modulo
-                            | DMA_ATTR_SSIZE(DMA_ATTR_SIZE_16BIT)   // Source data 16 bit
-                            | DMA_ATTR_DMOD(2)                      // Destination modulo 2
-                            | DMA_ATTR_DSIZE(DMA_ATTR_SIZE_16BIT);  // Destination 16 bit
+    DMA_TCD0_ATTR           = DMA_TCD_ATTR_SMOD(0)                      // No source modulo
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_16BIT)   // Source data 16 bit
+                            | DMA_TCD_ATTR_DMOD(2)                      // Destination modulo 2
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_16BIT);  // Destination 16 bit
     DMA_TCD0_NBYTES_MLNO    = 2;                                    // Transfer two bytes in each service request
     DMA_TCD0_SLAST          = 0;//-(DMA_BUFFER_SIZE*2);             // Source address will always be newly written before each new start
     DMA_TCD0_DADDR          = (volatile void *) &I2S0_TDR0;        // Destination is the I2S data register
     DMA_TCD0_DOFF           = 0;                                    // No destination offset after each transfer
     DMA_TCD0_DLASTSGA       = 0;                                    // No scatter/gather
-    DMA_TCD0_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_CITER_MASK;     // Major loop iteration count = total samples (128)
-    DMA_TCD0_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
-    DMA_TCD0_CSR            = DMA_CSR_INTMAJOR                      // Interrupt on major loop completion
-                            | DMA_CSR_BWC(3);                       // DMA bandwidth control
+    DMA_TCD0_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
+    DMA_TCD0_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
+    DMA_TCD0_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
+                            | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
 
     // enable DMA channel 0 requests
     // DMA_ERQ = DMA_ERQ_ERQ0;
@@ -534,10 +534,10 @@ void I2S_class::dma_receive_init(void)
     // fill the TCD regs
     DMA_TCD1_SADDR          = (const volatile void *) &I2S0_RDR0;  // Source is the I2S data register
     DMA_TCD1_SOFF           = 0;                                    // No source offset after each transfer
-    DMA_TCD1_ATTR           = DMA_ATTR_SMOD(2)                      // No source modulo
-                            | DMA_ATTR_SSIZE(DMA_ATTR_SIZE_16BIT)   // Source data 16 bit
-                            | DMA_ATTR_DMOD(0)                      // No destination modulo
-                            | DMA_ATTR_DSIZE(DMA_ATTR_SIZE_16BIT);  // Destination 16 bit
+    DMA_TCD1_ATTR           = DMA_TCD_ATTR_SMOD(2)                      // No source modulo
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_16BIT)   // Source data 16 bit
+                            | DMA_TCD_ATTR_DMOD(0)                      // No destination modulo
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_16BIT);  // Destination 16 bit
     DMA_TCD1_NBYTES_MLNO    = 2;                                    // Transfer two bytes in each service request
     DMA_TCD1_SLAST          = 0;//-(DMA_BUFFER_SIZE*2);             // Source address will always be newly written before each new start
     DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;  // Alternated with _dma_Buffer_B by our interrupt handler
@@ -556,7 +556,7 @@ void I2S_class::dma_receive_init(void)
     DMAMUX0_CHCFG1 |= DMAMUX_ENABLE /* | DMAMUX_TRIG */;
 
     // Set active
-    DMA_TCD1_CSR |= DMA_CSR_ACTIVE;
+    DMA_TCD1_CSR |= DMA_TCD_CSR_ACTIVE;
 
     // To initiate from software, set DMA_CSR[start]
     //DMA_TCD1_CSR |= DMA_CSR_START;
