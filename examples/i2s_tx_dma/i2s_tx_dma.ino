@@ -33,7 +33,6 @@ Tx pin 11: I2S0_MCLK     <--> MCLK
 
 /* I2S digital audio */
 #include <i2s.h>
-#define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2 // Transmit pins 3, 4, 9, 11
 #define CLOCK_TYPE          (I2S_CLOCK_48K_INTERNAL)
 #define clock_per_sec       48000
 
