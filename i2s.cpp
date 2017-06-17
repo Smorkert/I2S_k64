@@ -323,10 +323,11 @@ void I2S_class::clock_init()
                         break;
                 }
                     break;
-    }
+        }
 
     // re-enable system clock to the I2S module
     SIM_SCGC6 |= SIM_SCGC6_I2S;
+    }
 }
 
 
