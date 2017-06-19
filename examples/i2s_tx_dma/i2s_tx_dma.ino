@@ -69,6 +69,7 @@ void nextsinevalue()
 /* ----------------------- DMA transfer, we get callback to fill one of the ping-pong buffers ------ */
 void dma_tx_callback( int16_t *pBuf, uint16_t len )
 {
+  uint32_t count; 
   while( len>0 )
   {
     *pBuf++ = audx;
@@ -76,8 +77,9 @@ void dma_tx_callback( int16_t *pBuf, uint16_t len )
     nextsinevalue();
     len--;
     len--;
+    count++;
   }
-  // Serial.println(audf,DEC);
+  Serial.println(count);
 }
 
 
