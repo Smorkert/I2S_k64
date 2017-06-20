@@ -10,5 +10,7 @@ In development:
 
 -Only TX to generic DAC without register control w/ I2S SAI
 
--WORKING
+-Working with Teensy 3.2 & 3.5 @ 48kHz
+
+-Not working on 3.6 yet...
 
