@@ -4,38 +4,16 @@
 #include <inttypes.h> 
 #include <WProgram.h>
 
+
 // Audio configuration.  Edit these here if you need to.
-#define I2S_FRAME_SIZE         2            // Number of frames, 2=stereo
+#define CPU_CLK                144                       // System CLK in MHz (96, 120, 144, 168, 180, 240)
+#define I2S_PIN_PATTERN        I2S_TX_PIN_PATTERN_2   // TX Pin Pattern
+#define DMA_BUFFER_SIZE        128                      // DMA Buffer Size, decrease for increases latency 
+#define I2S_FRAME_SIZE         2                        // Number of frames, 2=stereo
+#define I2S_IO_BIT_DEPTH       16                       // Number of bits per sample in the physical data (8, 16 or 32)
+#define I2S_BUFFER_BIT_DEPTH   16                       // Number of bits per sample in the DMA buffer (8, 16 or 32)
 
-
-// Number of bits per sample in the physical data (8, 16 or 32)
-#ifndef I2S_IO_BIT_DEPTH 
-  #define I2S_IO_BIT_DEPTH  16
-#elif (I2S_IO_BIT_DEPTH == 8)||(I2S_IO_BIT_DEPTH == 16)||(I2S_IO_BIT_DEPTH == 32)
-#else
-  #error I2S_IO_BIT_DEPTH value not defined
-#endif
-
-
-// Number of bits per sample in the DMA buffer (8, 16 or 32)
-#ifndef I2S_BUFFER_BIT_DEPTH
-  #define I2S_BUFFER_BIT_DEPTH  16
-#elif (I2S_BUFFER_BIT_DEPTH == 8)||(I2S_BUFFER_BIT_DEPTH == 16)||(I2S_BUFFER_BIT_DEPTH == 32)
-#else
-  #error I2S_BUFFER_BIT_DEPTH value not defined
-#endif
-
-
-//System CLK in MHz
-#ifndef CPU_CLK
-  #define CPU_CLK 96
-#elif (CPU_CLK == 96)||(CPU_CLK == 120)||(CPU_CLK == 144)||(CPU_CLK == 168)||(CPU_CLK == 180)||(CPU_CLK == 240)
-#else
-  #error CPU_CLK value not defined
-#endif
-
-
-// Clock type constants
+// Clock type constants - change in main
 #define I2S_CLOCK_EXTERNAL     0            // The bit clock is provided by an external device (e.g. the codec)
 #define I2S_CLOCK_8K_INTERNAL  1            // The bit clock is 8kHz, internally generated
 #define I2S_CLOCK_32K_INTERNAL 2            // The bit clock is 32kHz, internally generated
@@ -77,27 +55,6 @@
 #define I2S_RX_PIN_PATTERN_4   0x40         // Receive pins 27, 29, 13 (no MCLK)
 #define I2S_RX_PIN_PATTERN_5   0x50         // Receive pins 27, 29, 13, 28 (MCLK on 28)
 #define I2S_RX_PIN_PATTERN_6   0x60         // Receive pins 27, 29, 13, 11 (MCLK on 11)
-
-//I2S RX PIN PATTERN
-#ifndef I2S_PIN_PATTERN 
-  #define I2S_PIN_PATTERN     I2S_TX_PIN_PATTERN_2
-#elif (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_1)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_2)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_3)||
-      (I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_4)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_5)||(I2S_PIN_PATTERN == I2S_TX_PIN_PATTERN_6)
-#else
-  #error I2S_PIN_PATTERN value not defined
-#endif
-
-        
-// DMA buffer size (in samples).
-// Using ping-pong DMA, this determines your latency.
-// If you need super-low latency, set this smaller (or use I2S without DMA).
-#ifndef DMA_BUFFER_SIZE
-  #define DMA_BUFFER_SIZE 128
-#elif (DMA_BUFFER_SIZE >= 1)&&(DMA_BUFFER_SIZE <= 128)
-#else
-  #error DMA_BUFFER_SIZE value not defined
-#endif
-#define DMA_BUFFER_SIZE        128
 
 // Use round-robin DMA channel priorities?  If not, they're explicitly set
 #define ROUNDROBIN
