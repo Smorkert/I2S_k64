@@ -1,4 +1,4 @@
-#include <i2s.h>
+#include "i2s.h"
 #include <kinetis.h>
 #include "core_pins.h"
 
@@ -205,11 +205,9 @@ void I2S_class::io_init(void)
     }
 }
 
-
 void I2S_class::clock_init()
 {
-    // Disable system clock to the I2S module
-    //SIM_SCGC6 &= ~(SIM_SCGC6_I2S);
+    //Enable system clock to I2S module
     SIM_SCGC6 |= SIM_SCGC6_I2S;
 
     if(clock==I2S_CLOCK_EXTERNAL)
@@ -224,20 +222,19 @@ void I2S_class::clock_init()
         // Select input clock 0 and output enable
         I2S0_MCR = I2S_MCR_MICS(0) | I2S_MCR_MOE;
         
-        // 8k, 12k, 16k, 32k, etc all clock the I2S module at 12.288 MHz
-        // 11025Hz, 22050, 44100 clock the I2S module at 11.2896 MHz
+        // 48k and 96k all clock the I2S module at 12.288 MHz or 24.576 MHz
+        // 44100 clock the I2S module at 11.2896 MHz
         switch( CPU_CLK )
         { 
             case 96:
-                switch( clock )
+                switch(clock)
                 {
                     case I2S_CLOCK_44K_INTERNAL:
                         // Divide to get the 11.2896 MHz from 96MHz (96* (2/17))
                         I2S0_MDR = I2S_MDR_FRACT(1) | I2S_MDR_DIVIDE(16);
                         break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
                     case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
                     default:
                         // Divide to get the 12.2880 MHz from 96MHz (96* (16/125))
                         I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
@@ -251,12 +248,11 @@ void I2S_class::clock_init()
                         // Divide to get the 11.2896 MHz from 120MHz (120* (147/1562))
                         I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(1561);
                         break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
                     case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
                     default:
-                        // Divide to get the 12.2880 MHz from 120MHz (120* (64/625))
-                        I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
+                        // Divide to get the 24.576 MHz from 120MHz (120* (128/625))
+                        I2S0_MDR = I2S_MDR_FRACT(127) | I2S_MDR_DIVIDE(624);
                         break;
                 }
                     break;
@@ -267,28 +263,11 @@ void I2S_class::clock_init()
                         // Divide to get the 11.2896 MHz from 144MHz (144* (49/625))
                         I2S0_MDR = I2S_MDR_FRACT(48) | I2S_MDR_DIVIDE(624);
                         break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
                     case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
                     default:
                         // Divide to get the 18.4320 MHz from 144MHz (144* (16/125))
                         I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
-                        break;
-                }
-                    break;
-             case 168:
-                switch( clock )
-                {
-                    case I2S_CLOCK_44K_INTERNAL:
-                        // Divide to get the 11.2896 MHz from 168MHz (168* (42/625))
-                        I2S0_MDR = I2S_MDR_FRACT(41) | I2S_MDR_DIVIDE(624);
-                        break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
-                    case I2S_CLOCK_48K_INTERNAL:
-                    default:
-                        // Divide to get the 12.2880 MHz from 168MHz (168* (117/1600))
-                        I2S0_MDR = I2S_MDR_FRACT(116) | I2S_MDR_DIVIDE(1599);
                         break;
                 }
                     break;
@@ -299,9 +278,8 @@ void I2S_class::clock_init()
                         // Divide to get the 11.2896 MHz from 180MHz (180* (196/3125))
                         I2S0_MDR = I2S_MDR_FRACT(195) | I2S_MDR_DIVIDE(3124);
                         break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
                     case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
                     default:
                         // Divide to get the 18.4320 MHz from 180MHz (180* (64/625))
                         I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
@@ -315,19 +293,15 @@ void I2S_class::clock_init()
                         // Divide to get the 11.2896 MHz from 240MHz (240* (147/3125))
                         I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(3124);
                         break;
-                    case I2S_CLOCK_8K_INTERNAL:
-                    case I2S_CLOCK_32K_INTERNAL:
                     case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
                     default:
-                        // Divide to get the 12.2880 MHz from 240MHz (240* (32/625))
-                        I2S0_MDR = I2S_MDR_FRACT(31) | I2S_MDR_DIVIDE(624);
+                        // Divide to get the 24.576 MHz from 240MHz (240* (64/625))
+                        I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
                         break;
                 }
                     break;
         }
-
-    // re-enable system clock to the I2S module
-    SIM_SCGC6 |= SIM_SCGC6_I2S;
     }
 }
 
@@ -384,7 +358,7 @@ void I2S_class::i2s_transmit_init()
     if( clock != I2S_CLOCK_EXTERNAL )
     {
         I2S0_TCR2 |= I2S_TCR2_MSEL(1);          // use mc1 (notbus clock as BCLK source
-        I2S0_TCR2 |= I2S_TCR2_DIV(3);           // divide internal master clock to generate bit clock
+        I2S0_TCR2 |= I2S_TCR2_DIV(BCLK_DIV);    // divide internal master clock to generate bit clock
         I2S0_TCR2 |= I2S_TCR2_BCD;              // BCLK is generated internally (master mode)
     }
     // --------------------------------------------------------------------------------    
@@ -401,7 +375,7 @@ void I2S_class::i2s_transmit_init()
     // --------------------------------------------------------------------------------
     I2S0_TCR5  = I2S_TCR5_W0W(SYWD);        // bits per word, first frame
     I2S0_TCR5 |= I2S_TCR5_WNW(SYWD);        // bits per word, nth frame
-    I2S0_TCR5 |= I2S_TCR5_FBT(0x0f);        // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
+    I2S0_TCR5 |= I2S_TCR5_FBT(SYWD);          // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
 }
 
 void I2S_class::i2s_receive_init()
@@ -423,7 +397,7 @@ void I2S_class::i2s_receive_init()
     if( clock != I2S_CLOCK_EXTERNAL )
     {
         I2S0_RCR2 |= I2S_RCR2_MSEL(0);          // use MCLK as BCLK source
-        I2S0_RCR2 |= I2S_RCR2_DIV(7);           // (DIV + 1) * 2, 12.288 MHz / 4 = 3.072 MHz
+        I2S0_RCR2 |= I2S_RCR2_DIV(BCLK_DIV);    // (DIV + 1) * 2, 12.288 MHz / 4 = 3.072 MHz
         I2S0_RCR2 |= I2S_RCR2_BCD;              // BCLK is generated internally in Master mode
     }
     // --------------------------------------------------------------------------------
@@ -440,7 +414,7 @@ void I2S_class::i2s_receive_init()
     // --------------------------------------------------------------------------------
     I2S0_RCR5  = I2S_RCR5_W0W(SYWD);        // bits per word, first frame
     I2S0_RCR5 |= I2S_RCR5_WNW(SYWD);        // bits per word, nth frame
-    I2S0_RCR5 |= I2S_RCR5_FBT(0x0f);        // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
+    I2S0_RCR5 |= I2S_RCR5_FBT(SYWD);        // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
 }
 
 
@@ -522,13 +496,12 @@ void I2S_class::dma_buffer_init(void)
 
 void I2S_class::dma_transmit_init(void)  
 {
-    // Enable clock to the DMAMUX module
-    SIM_SCGC6 |= SIM_SCGC6_DMAMUX;
-    // And clock to the DMA module
+    // Enable clock to the DMA module
     SIM_SCGC7 |= SIM_SCGC7_DMA;
+    // And clock to the DMAMUX module
+    SIM_SCGC6 |= SIM_SCGC6_DMAMUX;
     
     // configure DMA_MUX
-    // DMAMUX0_CHCFG0 = 0;
     DMAMUX0_CHCFG0 = DMAMUX_SOURCE_I2S0_TX;
 
     // Enable IRQ on the DMA channel 0
@@ -554,34 +527,33 @@ void I2S_class::dma_transmit_init(void)
            ;
    
     // fill the TCD regs
-    DMA_TCD0_SADDR          = (const volatile void *) _dma_Tx_Buffer_A ;            // alternated with _dma_Buffer_B by our interrupt handler
-    DMA_TCD0_SOFF           = (I2S_IO_BIT_DEPTH>>3);                                // 2 byte source offset after each transfer
-    DMA_TCD0_ATTR           = DMA_TCD_ATTR_SMOD(0)                      // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_16BIT)   // Source data 16 bit
+    DMA_TCD0_SADDR          = (const volatile void *) _dma_Tx_Buffer_A ;    // alternated with _dma_Buffer_B by our interrupt handler
+    DMA_TCD0_SOFF           = (I2S_IO_BIT_DEPTH>>3);                        // 2 byte source offset after each transfer
+    DMA_TCD0_ATTR           = DMA_TCD_ATTR_SMOD(0)                          // No source modulo
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 16 bit
                             | DMA_TCD_ATTR_DMOD((I2S_IO_BIT_DEPTH>>3))      // Destination modulo 2
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_16BIT);  // Destination 16 bit
-    DMA_TCD0_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer X bytes in each service request
-    DMA_TCD0_SLAST          = 0;//-(DMA_BUFFER_SIZE*2);             // Source address will always be newly written before each new start
-    DMA_TCD0_DADDR          = (volatile void *) &I2S0_TDR0;        // Destination is the I2S data register
-    DMA_TCD0_DOFF           = 0;                                    // No destination offset after each transfer
-    DMA_TCD0_DLASTSGA       = 0;                                    // No scatter/gather
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 16 bit
+    DMA_TCD0_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
+    DMA_TCD0_SLAST          = 0;                                            // Source address will always be newly written before each new start
+    DMA_TCD0_DADDR          = (volatile void *) &I2S0_TDR0;                 // Destination is the I2S data register
+    DMA_TCD0_DOFF           = 0;                                            // No destination offset after each transfer
+    DMA_TCD0_DLASTSGA       = 0;                                            // No scatter/gather
     DMA_TCD0_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
     DMA_TCD0_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
     DMA_TCD0_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
                             | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
 
     // enable DMA channel 0 requests
-    // DMA_ERQ = DMA_ERQ_ERQ0;
     DMA_SERQ = DMA_SERQ_SERQ(0);
 
     // enable DMAMUX
-    DMAMUX0_CHCFG0 |= DMAMUX_ENABLE /* | DMAMUX_TRIG */;
+    DMAMUX0_CHCFG0 |= DMAMUX_ENABLE;
 
     // Set active
     DMA_TCD0_CSR |= DMA_TCD_CSR_ACTIVE;
 
     // To initiate from software, set DMA_CSR[start]
-    //DMA_TCD0_CSR |= DMA_TCD_CSR_START;
+    DMA_TCD0_CSR |= DMA_TCD_CSR_START;
 }
 
 void I2S_class::dma_receive_init(void)  
@@ -592,7 +564,6 @@ void I2S_class::dma_receive_init(void)
     SIM_SCGC7 |= SIM_SCGC7_DMA;
     
     // configure DMA_MUX
-    // DMAMUX0_CHCFG1 = 0;
     DMAMUX0_CHCFG1 = DMAMUX_SOURCE_I2S0_RX;
 
     // Enable IRQ on the DMA channel 1
@@ -618,16 +589,16 @@ void I2S_class::dma_receive_init(void)
            ;
    
     // fill the TCD regs
-    DMA_TCD1_SADDR          = (const volatile void *) &I2S0_RDR0;  // Source is the I2S data register
-    DMA_TCD1_SOFF           = 0;                                    // No source offset after each transfer
+    DMA_TCD1_SADDR          = (const volatile void *) &I2S0_RDR0;           // Source is the I2S data register
+    DMA_TCD1_SOFF           = 0;                                            // No source offset after each transfer
     DMA_TCD1_ATTR           = DMA_TCD_ATTR_SMOD((I2S_IO_BIT_DEPTH>>3))      // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_16BIT)   // Source data 16 bit
-                            | DMA_TCD_ATTR_DMOD(0)                      // No destination modulo
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_16BIT);  // Destination 16 bit
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 16 bit
+                            | DMA_TCD_ATTR_DMOD(0)                          // No destination modulo
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 16 bit
     DMA_TCD1_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
-    DMA_TCD1_SLAST          = 0;//-(DMA_BUFFER_SIZE*2);             // Source address will always be newly written before each new start
+    DMA_TCD1_SLAST          = 0;                                    // Source address will always be newly written before each new start
     DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;  // Alternated with _dma_Buffer_B by our interrupt handler
-    DMA_TCD1_DOFF           = (I2S_IO_BIT_DEPTH>>3);                // 2 bytes destination offset after each transfer
+    DMA_TCD1_DOFF           = 2;                                    // 2 bytes destination offset after each transfer
     DMA_TCD1_DLASTSGA       = 0;                                    // No scatter/gather
     DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
     DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
@@ -635,7 +606,6 @@ void I2S_class::dma_receive_init(void)
                             | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
 
     // enable DMA channel 1 requests
-    // DMA_ERQ = DMA_ERQ_ERQ1;
     DMA_SERQ = DMA_SERQ_SERQ(1);
 
     // enable DMAMUX
@@ -645,7 +615,7 @@ void I2S_class::dma_receive_init(void)
     DMA_TCD1_CSR |= DMA_TCD_CSR_ACTIVE;
 
     // To initiate from software, set DMA_CSR[start]
-    //DMA_TCD1_CSR |= DMA_TCD_CSR_START;
+    DMA_TCD1_CSR |= DMA_TCD_CSR_START;
 }
 
 
