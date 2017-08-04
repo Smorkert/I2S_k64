@@ -271,6 +271,23 @@ void I2S_class::clock_init()
                         break;
                 }
                     break;
+             case 168:
+                switch( clock )
+                {
+                    case I2S_CLOCK_44K_INTERNAL:
+                    case I2S_CLOCK_88K_INTERNAL:
+                    default:
+                        // Divide to get the 16.9344 (x2 externally) MHz from 168MHz (168* (63/625))
+                        I2S0_MDR = I2S_MDR_FRACT(62) | I2S_MDR_DIVIDE(624);
+                        break;
+                    case I2S_CLOCK_48K_INTERNAL:
+                    case I2S_CLOCK_96K_INTERNAL:
+                    default:
+                        // Divide to get the ~12.288 MHz from 168MHz (168* (255/3486))
+                        I2S0_MDR = I2S_MDR_FRACT(254) | I2S_MDR_DIVIDE(3485);
+                        break;
+                }
+                    break;
              case 180:
                 switch( clock )
                 {
