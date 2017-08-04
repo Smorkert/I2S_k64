@@ -252,6 +252,7 @@ void I2S_class::clock_init()
                     case I2S_CLOCK_96K_INTERNAL:
                     default:
                         // Divide to get the 24.576 MHz from 120MHz (120* (128/625))
+                        // Don't use external CLK multipler. change BCLK_DIV to 1 for 96KHz Fs, 3 for 48KHz
                         I2S0_MDR = I2S_MDR_FRACT(127) | I2S_MDR_DIVIDE(624);
                         break;
                 }
@@ -266,8 +267,9 @@ void I2S_class::clock_init()
                     case I2S_CLOCK_48K_INTERNAL:
                     case I2S_CLOCK_96K_INTERNAL:
                     default:
-                        // Divide to get the 18.4320 MHz from 144MHz (144* (16/125))
-                        I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
+                        // Divide to get the 36.864 MHz from 144MHz (144* (32/125))
+                        // Don't use external CLK multipler. change BCLK_DIV to 2 for 96KHz Fs, 5 for 48KHz
+                        I2S0_MDR = I2S_MDR_FRACT(31) | I2S_MDR_DIVIDE(124);
                         break;
                 }
                     break;
@@ -277,13 +279,14 @@ void I2S_class::clock_init()
                     case I2S_CLOCK_44K_INTERNAL:
                     case I2S_CLOCK_88K_INTERNAL:
                     default:
-                        // Divide to get the 16.9344 (x2 externally) MHz from 168MHz (168* (63/625))
-                        I2S0_MDR = I2S_MDR_FRACT(62) | I2S_MDR_DIVIDE(624);
+                        // Divide to get the 33.8688 MHz from 168MHz (168* (126/625))
+                        // Don't use external CLK multiplier, change BCLK_DIV to 2 for 88.2KHz Fs, 5 for 44.1KHz
+                        I2S0_MDR = I2S_MDR_FRACT(125) | I2S_MDR_DIVIDE(624);
                         break;
                     case I2S_CLOCK_48K_INTERNAL:
                     case I2S_CLOCK_96K_INTERNAL:
                     default:
-                        // Divide to get the ~12.288 MHz from 168MHz (168* (255/3486))
+                        // Divide to get the ~12.288 MHz from 168MHz (168* (255/3486)), NOT EXACTLY 12.288MHz
                         I2S0_MDR = I2S_MDR_FRACT(254) | I2S_MDR_DIVIDE(3485);
                         break;
                 }
