@@ -6,7 +6,7 @@
 
 
 // Audio configuration.  Edit these here if you need to.
-#define CPU_CLK                120                      // System CLK in MHz (96, 120, 144, 180, 240)
+#define CPU_CLK                120                      // System CLK in MHz (96, 120, 144, 168, 180, 240)
 #define I2S_PIN_PATTERN        I2S_TX_PIN_PATTERN_2     // TX Pin Pattern
 #define DMA_BUFFER_SIZE        48                       // DMA Buffer Size, decrease size for smaller latency, ISR at half
 #define I2S_FRAME_SIZE         2                        // Number of frames, 2=stereo
@@ -17,8 +17,9 @@
 // Clock type constants - change in main
 #define I2S_CLOCK_EXTERNAL     0            // The sample rate is provided by an external device (e.g. the codec)
 #define I2S_CLOCK_44K_INTERNAL 1            // The sample rate is 44.1kHz, internally generated
-#define I2S_CLOCK_48K_INTERNAL 2            // The sample rate is 48kHz, internally generated
-#define I2S_CLOCK_96K_INTERNAL 3            // The sample rate is 96kHz, internally generated
+#define I2S_CLOCK_88K_INTERNAL 2            // The sample rate is 88.2kHz, internally generated
+#define I2S_CLOCK_48K_INTERNAL 3            // The sample rate is 48kHz, internally generated
+#define I2S_CLOCK_96K_INTERNAL 4            // The sample rate is 96kHz, internally generated
   
 
 // Pin patterns
