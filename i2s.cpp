@@ -227,95 +227,84 @@ void I2S_class::clock_init()
         switch( CPU_CLK )
         { 
             case 96:
-                switch(clock)
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
+                    case 0:
                         // Divide to get the 11.2896 MHz from 96MHz (96* (2/17))
+                        // ~11.294MHz, avoid using 
                         I2S0_MDR = I2S_MDR_FRACT(1) | I2S_MDR_DIVIDE(16);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
+                    case 1:
                         // Divide to get the 12.2880 MHz from 96MHz (96* (16/125))
                         I2S0_MDR = I2S_MDR_FRACT(15) | I2S_MDR_DIVIDE(124);
                         break;
                 }
                     break;
             case 120:
-                switch( clock )
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
+                    case 0:
                         // Divide to get the 11.2896 MHz from 120MHz (120* (147/1562))
+                        // ~11.293MHz, avoid using
                         I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(1561);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
+                    case 1:
                         // Divide to get the 24.576 MHz from 120MHz (120* (128/625))
-                        // Don't use external CLK multipler. change BCLK_DIV to 1 for 96KHz Fs, 3 for 48KHz
+                        // Change BCLK_DIV to 1 for 96KHz Fs, 3 for 48KHz
                         I2S0_MDR = I2S_MDR_FRACT(127) | I2S_MDR_DIVIDE(624);
                         break;
                 }
                     break;
             case 144:
-                switch( clock )
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
+                    case 0:
                         // Divide to get the 11.2896 MHz from 144MHz (144* (49/625))
                         I2S0_MDR = I2S_MDR_FRACT(48) | I2S_MDR_DIVIDE(624);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
+                    case 1:
                         // Divide to get the 36.864 MHz from 144MHz (144* (32/125))
-                        // Don't use external CLK multipler. change BCLK_DIV to 2 for 96KHz Fs, 5 for 48KHz
+                        // Change BCLK_DIV to 2 for 96KHz Fs, 5 for 48KHz
                         I2S0_MDR = I2S_MDR_FRACT(31) | I2S_MDR_DIVIDE(124);
                         break;
                 }
                     break;
              case 168:
-                switch( clock )
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
-                    case I2S_CLOCK_88K_INTERNAL:
-                    default:
-                        // Divide to get the 33.8688 MHz from 168MHz (168* (126/625))
-                        // Don't use external CLK multiplier, change BCLK_DIV to 2 for 88.2KHz Fs, 5 for 44.1KHz
-                        I2S0_MDR = I2S_MDR_FRACT(125) | I2S_MDR_DIVIDE(624);
+                    case 0:
+                        // Divide to get the 22.5792 MHz from 168MHz (168* (84/625))
+                        // Change BCLK_DIV to 2 for 88.2KHz Fs, 5 for 44.1KHz
+                        I2S0_MDR = I2S_MDR_FRACT(83) | I2S_MDR_DIVIDE(624);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
-                        // Divide to get the ~12.288 MHz from 168MHz (168* (255/3486)), NOT EXACTLY 12.288MHz
+                    case 1:
+                        // Divide to get the ~12.288 MHz from 168MHz (168* (255/3486)), 
+                        // Avoid using
                         I2S0_MDR = I2S_MDR_FRACT(254) | I2S_MDR_DIVIDE(3485);
                         break;
                 }
                     break;
              case 180:
-                switch( clock )
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
+                    case 0:
                         // Divide to get the 11.2896 MHz from 180MHz (180* (196/3125))
                         I2S0_MDR = I2S_MDR_FRACT(195) | I2S_MDR_DIVIDE(3124);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
+                    case 1:
                         // Divide to get the 18.4320 MHz from 180MHz (180* (64/625))
                         I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
                         break;
                 }
                     break;
              case 240:
-                switch( clock )
+                switch(MCLK_DIV)
                 {
-                    case I2S_CLOCK_44K_INTERNAL:
+                    case 0:
                         // Divide to get the 11.2896 MHz from 240MHz (240* (147/3125))
                         I2S0_MDR = I2S_MDR_FRACT(146) | I2S_MDR_DIVIDE(3124);
                         break;
-                    case I2S_CLOCK_48K_INTERNAL:
-                    case I2S_CLOCK_96K_INTERNAL:
-                    default:
+                    case 1:
                         // Divide to get the 24.576 MHz from 240MHz (240* (64/625))
                         I2S0_MDR = I2S_MDR_FRACT(63) | I2S_MDR_DIVIDE(624);
                         break;
@@ -375,12 +364,9 @@ void I2S_class::i2s_transmit_init()
     // --------------------------------------------------------------------------------
     I2S0_TCR2  = I2S_TCR2_SYNC(0);          // use asynchronous mode
     I2S0_TCR2 |= I2S_TCR2_BCP;              // BCLK polarity: active low
-    if( clock != I2S_CLOCK_EXTERNAL )
-    {
-        I2S0_TCR2 |= I2S_TCR2_MSEL(1);          // use mc1 (notbus clock as BCLK source
-        I2S0_TCR2 |= I2S_TCR2_DIV(BCLK_DIV);    // divide internal master clock to generate bit clock
-        I2S0_TCR2 |= I2S_TCR2_BCD;              // BCLK is generated internally (master mode)
-    }
+    I2S0_TCR2 |= I2S_TCR2_MSEL(1);          // use mc1 (notbus clock as BCLK source
+    I2S0_TCR2 |= I2S_TCR2_DIV(BCLK_DIV);    // divide internal master clock to generate bit clock
+    I2S0_TCR2 |= I2S_TCR2_BCD;              // BCLK is generated internally (master mode)
     // --------------------------------------------------------------------------------    
     I2S0_TCR3  = I2S_TCR3_TCE;              // transmit data channel is enabled
     // --------------------------------------------------------------------------------
@@ -388,14 +374,11 @@ void I2S_class::i2s_transmit_init()
     I2S0_TCR4 |= I2S_TCR4_SYWD(SYWD);       // number of bits in frame sync (plus one)
     I2S0_TCR4 |= I2S_TCR4_MF;               // MSB (most significant bit) first
     I2S0_TCR4 |= I2S_TCR4_FSE;              // Frame sync one bit before the frame
-    if( clock != I2S_CLOCK_EXTERNAL )
-    {
-        I2S0_TCR4 |= I2S_TCR4_FSD;              // WCLK is generated internally (master mode)
-    }
+    I2S0_TCR4 |= I2S_TCR4_FSD;              // WCLK is generated internally (master mode)
     // --------------------------------------------------------------------------------
     I2S0_TCR5  = I2S_TCR5_W0W(SYWD);        // bits per word, first frame
     I2S0_TCR5 |= I2S_TCR5_WNW(SYWD);        // bits per word, nth frame
-    I2S0_TCR5 |= I2S_TCR5_FBT(SYWD);          // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
+    I2S0_TCR5 |= I2S_TCR5_FBT(SYWD);        // index shifted for FIFO (TODO depend on I2S_BUFFER_BIT_DEPTH)
 }
 
 void I2S_class::i2s_receive_init()
@@ -414,12 +397,9 @@ void I2S_class::i2s_receive_init()
     // --------------------------------------------------------------------------------
     I2S0_RCR2  = I2S_RCR2_SYNC(1);          // synchronous with the transmitter
     I2S0_RCR2 |= I2S_RCR2_BCP;              // BCLK polarity: active low
-    if( clock != I2S_CLOCK_EXTERNAL )
-    {
-        I2S0_RCR2 |= I2S_RCR2_MSEL(0);          // use MCLK as BCLK source
-        I2S0_RCR2 |= I2S_RCR2_DIV(BCLK_DIV);    // (DIV + 1) * 2, 12.288 MHz / 4 = 3.072 MHz
-        I2S0_RCR2 |= I2S_RCR2_BCD;              // BCLK is generated internally in Master mode
-    }
+    I2S0_RCR2 |= I2S_RCR2_MSEL(0);          // use MCLK as BCLK source
+    I2S0_RCR2 |= I2S_RCR2_DIV(BCLK_DIV);    // (DIV + 1) * 2, 12.288 MHz / 4 = 3.072 MHz
+    I2S0_RCR2 |= I2S_RCR2_BCD;              // BCLK is generated internally in Master mode
     // --------------------------------------------------------------------------------
     I2S0_RCR3  = I2S_RCR3_RCE;              // receive data channel is enabled
     // --------------------------------------------------------------------------------
@@ -427,10 +407,7 @@ void I2S_class::i2s_receive_init()
     I2S0_RCR4 |= I2S_RCR4_SYWD(SYWD);       // bit width of a word (plus one)
     I2S0_RCR4 |= I2S_RCR4_MF;               // MSB (most significant bit) first
     I2S0_RCR4 |= I2S_RCR4_FSE;              // Frame sync one bit before the frame
-    if( clock != I2S_CLOCK_EXTERNAL )
-    {
-        I2S0_RCR4 |= I2S_RCR4_FSD;              // WCLK is generated internally (master mode)
-    }
+    I2S0_RCR4 |= I2S_RCR4_FSD;              // WCLK is generated internally (master mode)
     // --------------------------------------------------------------------------------
     I2S0_RCR5  = I2S_RCR5_W0W(SYWD);        // bits per word, first frame
     I2S0_RCR5 |= I2S_RCR5_WNW(SYWD);        // bits per word, nth frame
@@ -452,11 +429,6 @@ void I2S_class::i2s_tx_callback(void)
     if( I2S_FRAME_SIZE>1 ) I2S0_TDR0 = (uint32_t)(_i2s_Tx_Buffer[1]);
     if( I2S_FRAME_SIZE>2 ) I2S0_TDR0 = (uint32_t)(_i2s_Tx_Buffer[2]);
     if( I2S_FRAME_SIZE>3 ) I2S0_TDR0 = (uint32_t)(_i2s_Tx_Buffer[3]);
-    
-    //for( uint8_t i=0; i<I2S_FRAME_SIZE-1; i++ )
-    //{
-        //I2S0_TDR0 = (uint32_t)(_I2S_SAMPLE_T)(_i2s_Tx_Buffer[i]);
-    //}
     
     if(I2S0_TCSR & I2S_TCSR_FEF)  I2S0_TCSR |= I2S_TCSR_FEF; // clear if underrun
     if(I2S0_TCSR & I2S_TCSR_SEF)  I2S0_TCSR |= I2S_TCSR_SEF; // clear if frame sync error
