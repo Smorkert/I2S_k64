@@ -15,7 +15,7 @@
 
 //I2S digital audio
 #include "i2s.h"
-#define CLOCK_TYPE             (I2S_CLOCK_96K_INTERNAL)  // Sample Rate
+#define CLOCK_TYPE             (I2S_CLOCK_INTERNAL)  // Sample Rate
 
 // audio data
 int32_t audL, audR;
