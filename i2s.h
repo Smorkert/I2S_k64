@@ -12,15 +12,12 @@
 #define I2S_FRAME_SIZE         2                        // Number of frames, 2=stereo
 #define I2S_IO_BIT_DEPTH       32                       // Number of bits per sample in the physical data (8, 16 or 32)
 #define I2S_BUFFER_BIT_DEPTH   32                       // Number of bits per sample in the DMA buffer (8, 16 or 32)             
-#define BCLK_DIV               1                        // x/2-1 = BCLK_DIV, where x = MCLK/(FS*2*BITS), see notes in .cpp
+#define BCLK_DIV               1              // x/2-1 = BCLK_DIV, where x = MCLK/(FS*2*BIT_DEPTH), determines BCLK and SAMPLE_RATE 
+#define MCLK_DIV               1              // 0: 44.1k, 88.2k, 1: 48k, 96k
 
 // Clock type constants - change in main
-#define I2S_CLOCK_EXTERNAL     0            // The sample rate is provided by an external device (e.g. the codec)
-#define I2S_CLOCK_44K_INTERNAL 1            // The sample rate is 44.1kHz, internally generated
-#define I2S_CLOCK_88K_INTERNAL 2            // The sample rate is 88.2kHz, internally generated
-#define I2S_CLOCK_48K_INTERNAL 3            // The sample rate is 48kHz, internally generated
-#define I2S_CLOCK_96K_INTERNAL 4            // The sample rate is 96kHz, internally generated
-  
+#define I2S_CLOCK_EXTERNAL     0            // MCLK is provided by an external device
+#define I2S_CLOCK_INTERNAL     1            // MCLK is generated internally
 
 // Pin patterns
 // Teensy 3.0 hardware has several ways to configure its I2S pins:
