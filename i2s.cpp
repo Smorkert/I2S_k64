@@ -522,9 +522,9 @@ void I2S_class::dma_transmit_init(void)
     DMA_TCD0_SADDR          = (const volatile void *) _dma_Tx_Buffer_A ;    // alternated with _dma_Buffer_B by our interrupt handler
     DMA_TCD0_SOFF           = (I2S_IO_BIT_DEPTH>>3);                        // 2 byte source offset after each transfer
     DMA_TCD0_ATTR           = DMA_TCD_ATTR_SMOD(0)                          // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 16 bit
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 32 bit
                             | DMA_TCD_ATTR_DMOD((I2S_IO_BIT_DEPTH>>3))      // Destination modulo 2
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 16 bit
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 32 bit
     DMA_TCD0_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
     DMA_TCD0_SLAST          = 0;                                            // Source address will always be newly written before each new start
     DMA_TCD0_DADDR          = (volatile void *) &I2S0_TDR0;                 // Destination is the I2S data register
@@ -584,9 +584,9 @@ void I2S_class::dma_receive_init(void)
     DMA_TCD1_SADDR          = (const volatile void *) &I2S0_RDR0;           // Source is the I2S data register
     DMA_TCD1_SOFF           = 0;                                            // No source offset after each transfer
     DMA_TCD1_ATTR           = DMA_TCD_ATTR_SMOD((I2S_IO_BIT_DEPTH>>3))      // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 16 bit
+                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 32 bit
                             | DMA_TCD_ATTR_DMOD(0)                          // No destination modulo
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 16 bit
+                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 32 bit
     DMA_TCD1_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
     DMA_TCD1_SLAST          = 0;                                    // Source address will always be newly written before each new start
     DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;  // Alternated with _dma_Buffer_B by our interrupt handler
