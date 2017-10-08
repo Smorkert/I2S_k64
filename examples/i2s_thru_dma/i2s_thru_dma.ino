@@ -8,6 +8,12 @@
   Tx pin 4 : I2S0_TX_FS    <--> LRCLK
   Tx pin 9 : I2S0_TX_BCLK  <--> BCLK
   Tx pin 11: I2S0_MCLK     <--> MCLK
+  
+  Rx pin 13 : I2S0_RXD0     <--> Data
+  Rx pin 12 : I2S0_RX_FS    <--> LRCLK
+  Rx pin 27 : I2S0_RX_BCLK  <--> BCLK
+  Rx pin 11 : I2S0_MCLK     <--> MCLK
+  
 */
 
 //I2S digital audio
