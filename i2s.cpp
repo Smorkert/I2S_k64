@@ -529,18 +529,17 @@ void I2S_class::dma_transmit_init(void)
     DMA_TCD0_SADDR          = (const volatile void *) _dma_Tx_Buffer_A ;    // alternated with _dma_Buffer_B by our interrupt handler
     DMA_TCD0_SOFF           = (I2S_IO_BIT_DEPTH>>3);                        // 2 byte source offset after each transfer
     DMA_TCD0_ATTR           = DMA_TCD_ATTR_SMOD(0)                          // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 32 bit
+                            | DMA_TCD_ATTR_SSIZE((I2S_IO_BIT_DEPTH>>4))     // Source data 32 bit
                             | DMA_TCD_ATTR_DMOD((I2S_IO_BIT_DEPTH>>3))      // Destination modulo 2
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 32 bit
+                            | DMA_TCD_ATTR_DSIZE((I2S_IO_BIT_DEPTH>>4));    // Destination 32 bit
     DMA_TCD0_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
     DMA_TCD0_SLAST          = 0;                                            // Source address will always be newly written before each new start
     DMA_TCD0_DADDR          = (volatile void *) &I2S0_TDR0;                 // Destination is the I2S data register
     DMA_TCD0_DOFF           = 0;                                            // No destination offset after each transfer
     DMA_TCD0_DLASTSGA       = 0;                                            // No scatter/gather
-    DMA_TCD0_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
-    DMA_TCD0_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
-    DMA_TCD0_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
-                            | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
+    DMA_TCD0_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;         // Major loop iteration count = total samples (128)
+    DMA_TCD0_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;         // Major loop iteration count = total samples (128), no channel links
+    DMA_TCD0_CSR            = DMA_TCD_CSR_INTMAJOR;                         // Interrupt on major loop completion
 
     // enable DMA channel 0 requests
     DMA_SERQ = DMA_SERQ_SERQ(0);
@@ -588,21 +587,20 @@ void I2S_class::dma_receive_init(void)
            ;
    
     // fill the TCD regs
-    DMA_TCD1_SADDR          = (const volatile void *) &I2S0_RDR0;           // Source is the I2S data register
+    DMA_TCD1_SADDR          = (void *)((uint32_t)&I2S0_RDR0);               // Source is the I2S data register
     DMA_TCD1_SOFF           = 0;                                            // No source offset after each transfer
     DMA_TCD1_ATTR           = DMA_TCD_ATTR_SMOD((I2S_IO_BIT_DEPTH>>3))      // No source modulo
-                            | DMA_TCD_ATTR_SSIZE(DMA_TCD_ATTR_SIZE_32BIT)   // Source data 32 bit
+                            | DMA_TCD_ATTR_SSIZE((I2S_IO_BIT_DEPTH>>4))     // Source data 32 bit
                             | DMA_TCD_ATTR_DMOD(0)                          // No destination modulo
-                            | DMA_TCD_ATTR_DSIZE(DMA_TCD_ATTR_SIZE_32BIT);  // Destination 32 bit
+                            | DMA_TCD_ATTR_DSIZE((I2S_IO_BIT_DEPTH>>4));    // Destination 32 bit
     DMA_TCD1_NBYTES_MLNO    = (I2S_IO_BIT_DEPTH>>3);                        // Transfer two bytes in each service request
-    DMA_TCD1_SLAST          = 0;                                    // Source address will always be newly written before each new start
-    DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;  // Alternated with _dma_Buffer_B by our interrupt handler
-    DMA_TCD1_DOFF           = 2;                                    // 2 bytes destination offset after each transfer
-    DMA_TCD1_DLASTSGA       = 0;                                    // No scatter/gather
-    DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;     // Major loop iteration count = total samples (128)
-    DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;     // Major loop iteration count = total samples (128), no channel links
-    DMA_TCD1_CSR            = DMA_TCD_CSR_INTMAJOR                      // Interrupt on major loop completion
-                            | DMA_TCD_CSR_BWC(3);                       // DMA bandwidth control
+    DMA_TCD1_SLAST          = 0;                                            // Source address will always be newly written before each new start
+    DMA_TCD1_DADDR          = (volatile void *) _dma_Rx_Buffer_A ;          // Alternated with _dma_Buffer_B by our interrupt handler
+    DMA_TCD1_DOFF           = (I2S_IO_BIT_DEPTH>>3);                        // 2 bytes destination offset after each transfer
+    DMA_TCD1_DLASTSGA       = 0;                                            // No scatter/gather
+    DMA_TCD1_CITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_CITER_MASK;         // Major loop iteration count = total samples (128)
+    DMA_TCD1_BITER_ELINKNO  = DMA_BUFFER_SIZE & DMA_TCD_BITER_MASK;         // Major loop iteration count = total samples (128), no channel links
+    DMA_TCD1_CSR            = DMA_TCD_CSR_INTMAJOR;                         // Interrupt on major loop completion
 
     // enable DMA channel 1 requests
     DMA_SERQ = DMA_SERQ_SERQ(1);
