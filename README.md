@@ -14,7 +14,8 @@ SETUP:
   - I2S_FRAME_SIZE : Channel size of audio transfer. 1 = mono, 2 = stereo, etc.
   - I2S_IO_BIT_DEPTH: Desired bit depth of audio samples. 8, 16, or 32.
   - BCLK_DIV: BCLK divider. This configures sampling speed for I2S bus.
-      x/2-1 = BCLK_DIV, where x = MCLK/(LRCLK*2*I2S_IO_BIT_DEPTH). LRCLK == Sampling Frequency.
+  
+      - x/2-1 = BCLK_DIV, where x = MCLK/(LRCLK*2*I2S_IO_BIT_DEPTH). LRCLK == Sampling Frequency.
   - MCLK_DIV: Additional scale factor for MCLK if internally generated. 0 = 44.1k, 88.2k, 1 = 48k, 96k.
 
 2) In main.cpp
