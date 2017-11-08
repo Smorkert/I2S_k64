@@ -15,3 +15,6 @@ SETUP:
       x/2-1 = BCLK_DIV, where x = MCLK/(LRCLK*2*I2S_IO_BIT_DEPTH). LRCLK == Sampling Frequency.
   - MCLK_DIV: Additional scale factor for MCLK if internally generated. 0 = 44.1k, 88.2k, 1 = 48k, 96k.
 
+2) In main.cpp
+  - define CLOCK_TYPE: I2S_CLOCK_EXTERNAL or I2S_CLOCK_INTERNAL. Internal or external MCLK.
+  - verify variables are correct size: Buffer[buffersize] & pBuf must equal I2S_IO_BIT_DEPTH. (int8_t, int16_t, int32_t)
