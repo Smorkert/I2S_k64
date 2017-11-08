@@ -5,6 +5,7 @@ I2S library for Teensy sub family (Teensy 3.2/5/6)
 Initializes an I2S interface using DMA with user defined MCLK, BCLK, LRCLK, buffer size and bit depth.
 
 -Working with Teensy 3.2, 3.5, 3.6
+
 -Examples for TX (DAC only) and TX/RX (CODEC)
 
 SETUP:
