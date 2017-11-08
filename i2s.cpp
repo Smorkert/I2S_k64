@@ -166,6 +166,13 @@ void I2S_class::io_init(void)
             CORE_PIN9_CONFIG  = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_BCLK
             CORE_PIN11_CONFIG = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_MCLK
             break;
+        case I2S_CODEC_PIN_PATTERN_2: //for codecs with shared MCLK, BCLK and LRCLK
+            CORE_PIN3_CONFIG  = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_TXD0
+            CORE_PIN27_CONFIG = PORT_PCR_DSE | PORT_PCR_MUX(4);     // I2S0_RXD0
+            CORE_PIN4_CONFIG  = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_LRCLK
+            CORE_PIN9_CONFIG  = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_BCLK
+            CORE_PIN11_CONFIG = PORT_PCR_DSE | PORT_PCR_MUX(6);     // I2S0_MCLK
+            break;
         default:
             break;
     }
