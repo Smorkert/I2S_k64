@@ -47,7 +47,8 @@
 #define I2S_TX_PIN_PATTERN_4   0x04         // Transmit pins 22, 23, 9, 11 (MCLK on 11)
 #define I2S_TX_PIN_PATTERN_5   0x05         // Transmit pins 3, 4, 24 (no MCLK)
 #define I2S_TX_PIN_PATTERN_6   0x06         // Transmit pins 3, 4, 24, 28 (MCLK on 28)
-#define I2S_CODEC_PIN_PATTERN  0x07         // TX/RX setup for Codec: (3, 4, 9, 11, 13 | TX, RX, LRCLK, BCLK, MCLK)
+#define I2S_CODEC_PIN_PATTERN  0x07         // I2S setup for Codec: (3, 4, 9, 11, 13 | TX, LRCLK, BCLK, MCLK, RX) T3.2/5/6
+#define I2S_CODEC_PIN_PATTERN_2  0x08       // I2S setup for Codec: (3, 4, 9, 11, 27 | TX, LRCLK, BCLK, MCLK, RX) T3.5/6 *no LED
 
 #define I2S_RX_PIN_PATTERN_1   0x10         // Receive pins 11, 12, 13 (no MCLK)
 #define I2S_RX_PIN_PATTERN_2   0x20         // Receive pins 11, 12, 13, 28 (MCLK on 28)
