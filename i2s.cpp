@@ -1,5 +1,6 @@
 #include "i2s.h"
 #include <kinetis.h>
+#include <imxrt.h>
 #include "core_pins.h"
 
 // There's one instance of the class for Tx, another for RX
