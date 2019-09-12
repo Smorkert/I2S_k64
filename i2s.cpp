@@ -1,5 +1,5 @@
 #include "i2s.h"
-#include <kinetis.h>
+//#include <kinetis.h> //enable if using 3.2-3.6
 #include <imxrt.h>
 #include "core_pins.h"
 
