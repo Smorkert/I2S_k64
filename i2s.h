@@ -6,8 +6,8 @@
 
 
 // Audio configuration.  Edit these here if you need to.
-#define CPU_CLK                600                       // System CLK in MHz (96, 120, 144, 168, 180, 240)
-#define I2S_PIN_PATTERN        I2S_CODEC_PIN_PATTERN_4_0    // TX Pin Pattern
+#define CPU_CLK                240                       // System CLK in MHz (96, 120, 144, 168, 180, 240)
+#define I2S_PIN_PATTERN        I2S_CODEC_PIN_PATTERN_2    // TX Pin Pattern
 #define DMA_BUFFER_SIZE        64                       // DMA Buffer Size, decrease size for smaller latency, ISR at half
 #define I2S_FRAME_SIZE         2                        // Number of frames, 2=stereo
 #define I2S_IO_BIT_DEPTH       32                       // Number of bits per sample in the physical data (8, 16 or 32)
