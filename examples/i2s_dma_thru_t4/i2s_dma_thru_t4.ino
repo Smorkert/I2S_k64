@@ -1,6 +1,7 @@
 /*
-  I2S w/ DMA for Teensy 4.0
-  The current configuration is set up for sample rate = 48kHz, 32 bit values, MCLK_INT = 24.576
+  I2S w/ DMA for Teensy 3.6
+  The current configuration is set up for sample rate = 48kHz, 32 bit values, MCLK_INT = 24.576MHz
+  TEST CODE
   See header file for specifics
   TESTED and WORKING
   PINS: (I2S_CODEC_PIN_PATTERN)
@@ -15,9 +16,7 @@
 //I2S digital audio
 #include "i2s.h"
 #include <Wire.h>
-//#include "AudioCodec.h"
-#define CLOCK_TYPE             (I2S_CLOCK_EXTERNAL)  // Sample Rate
-//#define SAMPLE_RATE 88         //88 or 44, change BCLK_DIV in i2s.h (0: 88.2KHz-32-bit, 1:88.2KHz-16-bit, 1: 44.1KHz-32-bit, 3: 44.1KHz-16-bit)
+#define CLOCK_TYPE             (I2S_CLOCK_INTERNAL)  // Sample Rate
 
 // Circular buffer for audio samples, interleaved left & right channel, change intXX_t for 32-bit or 16-bit audio
 const uint16_t buffersize = DMA_BUFFER_SIZE; // must be a multiple of DMA_BUFFER_SIZE
@@ -57,7 +56,6 @@ void dma_tx_callback( int32_t *pBuf, uint16_t len )
 
 void setup()
 {
-  //AudioCodec_init(); // setup codec registers
   Serial.println( "Initializing" );
   
   delay(200); 
