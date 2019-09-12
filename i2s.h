@@ -12,7 +12,7 @@
 #define I2S_FRAME_SIZE         2                        // Number of frames, 2=stereo
 #define I2S_IO_BIT_DEPTH       32                       // Number of bits per sample in the physical data (8, 16 or 32)
 #define I2S_BUFFER_BIT_DEPTH   I2S_IO_BIT_DEPTH         // Number of bits per sample in the DMA buffer (8, 16 or 32)             
-#define BCLK_DIV               3              // x/2-1 = BCLK_DIV, where x = MCLK/(FS*2*BIT_DEPTH), determines BCLK and SAMPLE_RATE 
+#define BCLK_DIV               1              // x/2-1 = BCLK_DIV, where x = MCLK/(FS*2*BIT_DEPTH), determines BCLK and SAMPLE_RATE 
 #define MCLK_DIV               1              // 0: 44.1k, 88.2k, 1: 48k, 96k
 
 
