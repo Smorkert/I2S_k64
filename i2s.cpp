@@ -332,6 +332,19 @@ void I2S_class::clock_init()
                         break;
                 }
                     break;
+             case 600:
+                switch(MCLK_DIV)
+                {
+                    case 0:
+                        // Divide to get the 11.2896 MHz from 600MHz (600* (47/2500))
+                        I2S0_MDR = I2S_MDR_FRACT(46) | I2S_MDR_DIVIDE(2499);
+                        break;
+                    case 1:
+                        // Divide to get the 24.576 MHz from 600MHz (600* (128/3125))
+                        I2S0_MDR = I2S_MDR_FRACT(127) | I2S_MDR_DIVIDE(3124);
+                        break;
+                }
+                    break;
         }
     }
 }
